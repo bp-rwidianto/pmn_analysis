@@ -95,7 +95,7 @@ def author_detail_fragment():
                 # col1, col2, col3 = st.columns([1, 6, 1])
                 html_text = highlight_author_pyvis(author_id, st.session_state.graph, st.session_state.aggregated_graph, st.session_state.df_data_items, st.session_state.competitors)
                 # with col2:
-                st.success("Graph creation complete ✅")
+                # st.success("Graph creation complete ✅")
                 pv_static(html_text)
                     
 
