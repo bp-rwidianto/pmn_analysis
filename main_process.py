@@ -117,11 +117,13 @@ def main_analysis(df_network, df_data_links, df_data_items, competitors):
         eigenvector_centrality = metrics_eigenvector_centrality(graph)
         pagerank = metrics_pagerank(graph)
 
-        df_data_items["degree_centrality"] = df_data_items.apply(lambda x: degree_centrality[int(x["author_id"])], axis = 1)
-        df_data_items["betweenness_centrality"] = df_data_items.apply(lambda x: betweenness_centrality[int(x["author_id"])], axis = 1)
-        df_data_items["closeness_centrality"] = df_data_items.apply(lambda x: closeness_centrality[int(x["author_id"])], axis = 1)
-        df_data_items["eigenvector_centrality"] = df_data_items.apply(lambda x: eigenvector_centrality[int(x["author_id"])], axis = 1)
-        df_data_items["pagerank"] = df_data_items.apply(lambda x: pagerank[int(x["author_id"])], axis = 1)
+        df_data_items["author_id"] = df_data_items["author_id"].astype(int)
+
+        df_data_items["degree_centrality"] = df_data_items["author_id"].map(degree_centrality).astype(float).round(7)
+        df_data_items["betweenness_centrality"] = df_data_items["author_id"].map(betweenness_centrality).astype(float).round(7)
+        df_data_items["closeness_centrality"] = df_data_items["author_id"].map(closeness_centrality).astype(float).round(7)
+        df_data_items["eigenvector_centrality"] = df_data_items["author_id"].map(eigenvector_centrality).astype(float).round(7)
+        df_data_items["pagerank"] = df_data_items["author_id"].map(pagerank).astype(float).round(7)
 
         # Top-down clean up from node with more than 3 edges
         major_nodes = []
