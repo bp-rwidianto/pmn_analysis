@@ -104,6 +104,7 @@ def main_analysis(df_network, df_data_links, df_data_items, competitors):
         # Add cluster information to data items
         df_data_items["sub-cluster"] = df_data_items.apply(lambda x: communities[int(x["author_id"])] if int(x["author_id"]) in communities.keys() else None, axis = 1)
         df_data_items["cluster"] = df_data_items.apply(lambda x: community_map[communities[int(x["author_id"])]]  if int(x["author_id"]) in communities.keys() else None, axis = 1)
+        df_data_items["active_author"] = df_data_items.apply(lambda x: True  if int(x["active_author"]) > 0 else False, axis = 1)
         df_data_items = df_data_items.dropna()
         df_data_items.head()
         print(f"{len(list(aggregated_graph.nodes()))} communities for analysis\n{len(list(graph.nodes()))} author in clusters")
@@ -151,30 +152,6 @@ def main_analysis(df_network, df_data_links, df_data_items, competitors):
                 aggregated_graph.remove_node(node)
                 removed_nodes.append(node)
         progress_bar.close()
-
-        # Remove clusters from df_data_items
-        progress_bar = tqdm(range(0, len(removed_nodes)), desc="Cleaning author lists...")
-        for removed_node in removed_nodes:
-            progress_bar.update(1)
-            df_data_items = df_data_items.drop(df_data_items[df_data_items.cluster == removed_node].index)
-        progress_bar.close()
-        df_data_items = df_data_items.reset_index()
-
-        print(f'Data cleaning complete\nGenerating graph...')
-
-        removed_communities = []
-        for node in list(community_map.keys()):
-            if community_map[node] in removed_nodes:
-                removed_communities.append(node)
-        removed_communities
-
-        removed_authors = []
-        for node in list(communities.keys()):
-            if communities[node] in removed_communities:
-                removed_authors.append(node)
-                graph.remove_node(int(node))
-                
-        print(f"Summary:\n{len(list(aggregated_graph.nodes()))} communities for analysis\n{len(removed_communities)} communities removed\n\n{len(list(graph.nodes()))} author in clusters\n{len(removed_authors)} authors removed")
 
         # Visualize the aggregated graph
         fig_main_network, ax_1 = plt.subplots(figsize=(12, 12))
