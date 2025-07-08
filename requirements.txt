@@ -1,0 +1,6 @@
+matplotlib
+networkx
+pyvis
+collection
+tqdm
+python-louvain
