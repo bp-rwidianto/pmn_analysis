@@ -43,8 +43,8 @@ def community_members():
         index=None
     )
     if community_id is not None:
-        table_view = st.session_state.df_data_items_filtered[st.session_state.df_data_items_filtered['cluster'] == community_id][['author_id', 'FullName', 'publications', 'countries', 'bp_user', 'active_author', 'degree_centrality', 'betweenness_centrality', 'closeness_centrality', 'eigenvector_centrality', 'pagerank']]
-        table_view.columns = ['Author ID', 'Name', 'Publications', 'Country', 'BP user', 'Active author', 'Degee cent.', 'Betweeness cent.', 'Closeness cent.', 'Eigen cent.', 'PageRank']
+        table_view = st.session_state.df_data_items_filtered[st.session_state.df_data_items_filtered['cluster'] == community_id][['author_id', 'FullName', 'publications', 'countries', 'bp_user', 'active_author']]
+        table_view.columns = ['Author ID', 'Name', 'Publications', 'Country', 'BP user', 'Active author']
         st.table(
             # st.session_state.df_data_items_filtered[st.session_state.df_data_items_filtered['cluster'] == community_id][['author_id', 'FullName', 'publications', 'countries', 'bp_user', 'active_author', 'degree_centrality', 'betweenness_centrality', 'closeness_centrality', 'eigenvector_centrality', 'pagerank']]
             table_view
