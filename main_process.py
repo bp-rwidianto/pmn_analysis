@@ -1,4 +1,5 @@
 from supporting_functions import *
+from network_metrics import *
 
 import pandas as pd
 import numpy as np
@@ -108,6 +109,19 @@ def main_analysis(df_network, df_data_links, df_data_items, competitors):
         df_data_items = df_data_items.dropna()
         df_data_items.head()
         print(f"{len(list(aggregated_graph.nodes()))} communities for analysis\n{len(list(graph.nodes()))} author in clusters")
+
+        # Perform network analysis
+        degree_centrality = metrics_degree_centrality(graph)
+        betweenness_centrality = metrics_betweenness_centrality(graph)
+        closeness_centrality = metrics_closeness_centrality(graph)
+        eigenvector_centrality = metrics_eigenvector_centrality(graph)
+        pagerank = metrics_pagerank(graph)
+
+        df_data_items["degree_centrality"] = df_data_items.apply(lambda x: degree_centrality[int(x["author_id"])], axis = 1)
+        df_data_items["betweenness_centrality"] = df_data_items.apply(lambda x: betweenness_centrality[int(x["author_id"])], axis = 1)
+        df_data_items["closeness_centrality"] = df_data_items.apply(lambda x: closeness_centrality[int(x["author_id"])], axis = 1)
+        df_data_items["eigenvector_centrality"] = df_data_items.apply(lambda x: eigenvector_centrality[int(x["author_id"])], axis = 1)
+        df_data_items["pagerank"] = df_data_items.apply(lambda x: pagerank[int(x["author_id"])], axis = 1)
 
         # Top-down clean up from node with more than 3 edges
         major_nodes = []
