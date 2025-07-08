@@ -142,43 +142,41 @@ def stream_author_network(author_details):
         time.sleep(0.02)
 
 # Main content
-col1, col2, col3 = st.columns([1, 6, 1])
-with col2:
-    st.title("PubMed Network Analysis 📊")
-    author_details = None
+st.title("PubMed Network Analysis 📊")
+author_details = None
 
-    if ('df_data_items' not in st.session_state) or (st.session_state.df_data_items is None):
-        st.write('### No processed data found!')
-        st.write('Please upload the network and information files in "Home" page to view the network analysis contents.')
+if ('df_data_items' not in st.session_state) or (st.session_state.df_data_items is None):
+    st.write('### No processed data found!')
+    st.write('Please upload the network and information files in "Home" page to view the network analysis contents.')
 
-    else:
-        ## Sidebar and widgets
-        st.sidebar.write("## __Analysis Filters__")
-        is_bp_user = st.sidebar.toggle("BP user")
-        is_active_author = st.sidebar.toggle("Active author")
-        country_filter = st.sidebar.multiselect("Author country", tuple(sorted(st.session_state.df_data_items["countries"].unique())))
-        is_expanded = False
+else:
+    ## Sidebar and widgets
+    st.sidebar.write("## __Analysis Filters__")
+    is_bp_user = st.sidebar.toggle("BP user")
+    is_active_author = st.sidebar.toggle("Active author")
+    country_filter = st.sidebar.multiselect("Author country", tuple(sorted(st.session_state.df_data_items["countries"].unique())))
+    is_expanded = False
 
-        ## Widget filter handler
-        if (is_bp_user == True) or (is_active_author == True) or (len(country_filter)):
-            temp = st.session_state.df_data_items
-            if (is_bp_user):
-                temp = temp[temp["bp_user"]]
-            if (is_active_author):
-                temp = temp[temp["active_author"] > 0]
-            if (len(country_filter)):
-                temp = temp[temp["countries"].isin(country_filter)]
+    ## Widget filter handler
+    if (is_bp_user == True) or (is_active_author == True) or (len(country_filter)):
+        temp = st.session_state.df_data_items
+        if (is_bp_user):
+            temp = temp[temp["bp_user"]]
+        if (is_active_author):
+            temp = temp[temp["active_author"] > 0]
+        if (len(country_filter)):
+            temp = temp[temp["countries"].isin(country_filter)]
 
-            st.session_state.df_data_items_filtered = temp
-            st.session_state.author_names = tuple(sorted(st.session_state.df_data_items_filtered["FullName"].unique()))
-            st.session_state.community_ids = tuple(sorted(st.session_state.df_data_items_filtered["cluster"].unique()))
+        st.session_state.df_data_items_filtered = temp
+        st.session_state.author_names = tuple(sorted(st.session_state.df_data_items_filtered["FullName"].unique()))
+        st.session_state.community_ids = tuple(sorted(st.session_state.df_data_items_filtered["cluster"].unique()))
 
 
-            
-        with st.expander("Community network map (static)", expanded=is_expanded):
-            static_community_map_fragment()
-            community_members()
+        
+    with st.expander("Community network map (static)", expanded=is_expanded):
+        static_community_map_fragment()
+        community_members()
 
-        st.divider()
+    st.divider()
 
-        author_detail_fragment()
+    author_detail_fragment()
