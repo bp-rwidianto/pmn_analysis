@@ -86,8 +86,8 @@ def author_detail_fragment():
             col1.write_stream(stream_author_data(author_details))
             col2.write_stream(stream_author_competitors(author_details))
             
-            with col3.container(border=True):
-                st.write_stream(stream_author_network(author_details))
+            # with col3.container(border=True):
+            #     st.write_stream(stream_author_network(author_details))
             
         
             author_id = get_item(st.session_state.df_data_items, author_name)["author_id"]
