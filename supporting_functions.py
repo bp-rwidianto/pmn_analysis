@@ -81,7 +81,7 @@ def split_large_communities(graph, partition, max_size=50):
 
 # Get data item of a specific person
 def get_item(df_data_items, name):
-    return df_data_items.iloc[df_data_items[df_data_items.FullName == name].index[0]][["author_id", "FullName", "publications", "countries", "bp_user", "active_author", "mention_bp", "sub-cluster", "cluster", "manufacturerCount"]]
+    return df_data_items.loc[df_data_items[df_data_items.FullName == name].index[0]][["author_id", "FullName", "publications", "countries", "bp_user", "active_author", "mention_bp", "sub-cluster", "cluster", "manufacturerCount"]]
 
 # Retrieve members of a cluster
 def nodes_member(agg_graph, node):
