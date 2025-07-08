@@ -6,6 +6,7 @@ import time
 st.set_page_config(
     page_title="Network Analysis",
     page_icon="🏠",
+    layout="centered"
 )
 
 # Content
