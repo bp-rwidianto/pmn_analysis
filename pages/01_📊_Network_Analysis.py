@@ -8,7 +8,6 @@ import pandas as pd
 import numpy as np
 import re
 from stvis import pv_static
-from streamlit_agraph import agraph, Node, Edge, Config
 
 st.set_page_config(
     page_title="Network Analysis",
