@@ -10,7 +10,7 @@ st.set_page_config(
 )
 
 # Content
-st.title("Welcome to Brain Product's Network Analysis Dashboard 📊")
+st.title("Welcome to PubMed's Network Analysis Dashboard 📊")
 st.sidebar.info("👋 Welcome!")
 
 st.markdown(
