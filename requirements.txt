@@ -4,3 +4,5 @@ pyvis
 collection
 tqdm
 python-louvain
+stvis
+scipy
