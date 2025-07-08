@@ -2,7 +2,7 @@ import streamlit as st
 import time
 import numpy as np
 
-st.set_page_config(page_title="Instruction of Use", page_icon="📃")
+st.set_page_config(page_title="Instruction of Use", page_icon="📃", layout="centered")
 
 st.markdown("# Instruction of Use")
 st.sidebar.header("Instruction of Use")
