@@ -126,7 +126,7 @@ def stream_author_data(author_details):
         time.sleep(0.02)
 
 # Main content
-st.title("Brain Product Network Analysis 📊")
+st.title("PubMed Network Analysis 📊")
 author_details = None
 
 if ('df_data_items' not in st.session_state) or (st.session_state.df_data_items is None):
