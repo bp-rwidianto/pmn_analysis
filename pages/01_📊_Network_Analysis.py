@@ -28,37 +28,9 @@ if ('df_data_items' in st.session_state) and (st.session_state.df_data_items is 
         'competitors': st.session_state.competitors
     }
 
-else:
-    st.write('### No processed data found!')
-    st.write('Please upload the network and information files in "Home" page to view the network analysis contents.')
-
+# Functions and components
 def set_community_id(new_value):
     st.session_state.community_id = new_value
-
-# Main content
-st.title("Brain Product Network Analysis 📊")
-author_details = None
-
-## Sidebar and widgets
-st.sidebar.write("## __Analysis Filters__")
-is_bp_user = st.sidebar.toggle("BP user")
-is_active_author = st.sidebar.toggle("Active author")
-country_filter = st.sidebar.multiselect("Author country", tuple(sorted(st.session_state.df_data_items["countries"].unique())))
-is_expanded = False
-
-## Widget filter handler
-if (is_bp_user == True) or (is_active_author == True) or (len(country_filter)):
-    temp = st.session_state.df_data_items
-    if (is_bp_user):
-        temp = temp[temp["bp_user"]]
-    if (is_active_author):
-        temp = temp[temp["active_author"] > 0]
-    if (len(country_filter)):
-        temp = temp[temp["countries"].isin(country_filter)]
-
-    st.session_state.df_data_items_filtered = temp
-    st.session_state.author_names = tuple(sorted(st.session_state.df_data_items_filtered["FullName"].unique()))
-    st.session_state.community_ids = tuple(sorted(st.session_state.df_data_items_filtered["cluster"].unique()))
 
 ## Community members
 @st.fragment
@@ -89,12 +61,6 @@ def static_community_map_fragment():
     with tab2:
         st.header("Main Network Clusters")
         st.pyplot(st.session_state.fig_main_network)
-    
-with st.expander("Community network map (static)", expanded=is_expanded):
-    static_community_map_fragment()
-    community_members()
-
-st.divider()
 
 ## Author details
 # Fragment for isolated updates
@@ -159,4 +125,42 @@ def stream_author_data(author_details):
         yield word + " "
         time.sleep(0.02)
 
-author_detail_fragment()
+# Main content
+st.title("Brain Product Network Analysis 📊")
+author_details = None
+
+if ('df_data_items' not in st.session_state) or (st.session_state.df_data_items is None):
+    st.write('### No processed data found!')
+    st.write('Please upload the network and information files in "Home" page to view the network analysis contents.')
+
+else:
+    ## Sidebar and widgets
+    st.sidebar.write("## __Analysis Filters__")
+    is_bp_user = st.sidebar.toggle("BP user")
+    is_active_author = st.sidebar.toggle("Active author")
+    country_filter = st.sidebar.multiselect("Author country", tuple(sorted(st.session_state.df_data_items["countries"].unique())))
+    is_expanded = False
+
+    ## Widget filter handler
+    if (is_bp_user == True) or (is_active_author == True) or (len(country_filter)):
+        temp = st.session_state.df_data_items
+        if (is_bp_user):
+            temp = temp[temp["bp_user"]]
+        if (is_active_author):
+            temp = temp[temp["active_author"] > 0]
+        if (len(country_filter)):
+            temp = temp[temp["countries"].isin(country_filter)]
+
+        st.session_state.df_data_items_filtered = temp
+        st.session_state.author_names = tuple(sorted(st.session_state.df_data_items_filtered["FullName"].unique()))
+        st.session_state.community_ids = tuple(sorted(st.session_state.df_data_items_filtered["cluster"].unique()))
+
+
+        
+    with st.expander("Community network map (static)", expanded=is_expanded):
+        static_community_map_fragment()
+        community_members()
+
+    st.divider()
+
+    author_detail_fragment()
