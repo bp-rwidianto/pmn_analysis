@@ -3,7 +3,7 @@ import networkx as nx
 from pyvis.network import Network
 import streamlit as st
 
-def highlight_community_pyvis(community_id, graph, aggregated_graph, df_data_items, competitors):
+def highlight_community_pyvis(community_id, graph, aggregated_graph, df_data_items, competitors, topics):
     
     graph_highlight, highlight_communities, node_information = highlight_community(graph, aggregated_graph, community_id, df_data_items)
 
@@ -27,15 +27,18 @@ def highlight_community_pyvis(community_id, graph, aggregated_graph, df_data_ite
         nt.get_node(node)["active_author"] = str(node_information[str(node)]["active_author"])
         nt.get_node(node)["bp_user"] = str(node_information[str(node)]["bp_user"])
         nt.get_node(node)["mention_bp"] = str(node_information[str(node)]["mention_bp"])
+        
         for competitor in competitors:
-            nt.get_node(node)[f"ZZ_{competitor}"] = str(node_information[str(node)][competitor])
+            nt.get_node(node)[f"Competitor_{competitor}"] = str(node_information[str(node)][f"Competitor_{competitor}"])
+        for topic in topics:
+            nt.get_node(node)[f"Topic_{topic}"] = str(node_information[str(node)][f"Topic_{topic}"])
     
     # Export graph visual
     nt.save_graph("assets/network.html")
 
     return nt
 
-def highlight_author_pyvis(author_id, graph, aggregated_graph, df_data_items, competitors):
+def highlight_author_pyvis(author_id, graph, aggregated_graph, df_data_items, competitors, topics):
     
     graph_highlight, node_information = highlight_author(graph, aggregated_graph, author_id, df_data_items)
 
@@ -59,8 +62,11 @@ def highlight_author_pyvis(author_id, graph, aggregated_graph, df_data_items, co
         nt.get_node(node)["active_author"] = str(node_information[str(node)]["active_author"])
         nt.get_node(node)["bp_user"] = str(node_information[str(node)]["bp_user"])
         nt.get_node(node)["mention_bp"] = str(node_information[str(node)]["mention_bp"])
+
         for competitor in competitors:
-            nt.get_node(node)[f"ZZ_{competitor}"] = str(node_information[str(node)][competitor])
+            nt.get_node(node)[f"Competitor_{competitor}"] = str(node_information[str(node)][f"Competitor_{competitor}"])
+        for topic in topics:
+            nt.get_node(node)[f"Topic_{topic}"] = str(node_information[str(node)][f"Topic_{topic}"])
     progress_bar.empty()
 
     # Export graph visual
