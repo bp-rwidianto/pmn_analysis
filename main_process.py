@@ -31,14 +31,15 @@ def handle_data_input(network_data, node_data):
         ## Store node information in dataframe
         df_data_items = pd.DataFrame(node_data)
 
-        ## Retrieve competitors data for later flagging
-        competitors = [x for x in df_data_items.columns if x not in ["author_id", "FullName", "publications", "countries", "bp_user", "active_author", "mention_bp", "sub-cluster", "cluster"]]
+        ## Retrieve competitors and topics data for later flagging
+        competitors = [re.sub("Competitor_", "", x) for x in df_data_items.columns if "Competitor_" in x]
+        topics = [re.sub("Topic_", "", x) for x in df_data_items.columns if "Topic_" in x]
 
-        return df_network, df_data_links, df_data_items, competitors
+        return df_network, df_data_links, df_data_items, competitors, topics
 
-    except: return None, None, None, None
+    except: return None, None, None, None, None
 
-def main_analysis(df_network, df_data_links, df_data_items, competitors):
+def main_analysis(df_network, df_data_links, df_data_items, competitors, topics):
 
     # Check input variables
     if df_network is None:
