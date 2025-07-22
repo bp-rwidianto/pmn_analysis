@@ -205,7 +205,8 @@ def highlight_author(graph, aggregated_graph, highlight_author, df_data_items):
         
     # Get information of nodes for highlight communities only
     df_highlight = df_data_items[df_data_items["author_id"].isin([str(element) for element in list(graph_highlight.nodes)])]
-    competitors = [x for x in df_highlight.columns if x not in ["author_id", "FullName", "publications", "countries", "bp_user", "active_author", "mention_bp", "sub-cluster", "cluster"]]
+    competitors = [x for x in df_data_items.columns if "Competitor_" in x]
+    topics = [x for x in df_data_items.columns if "Topic_" in x]
     node_information = {}
     
     for i in range(0, len(df_highlight)):
@@ -235,6 +236,13 @@ def highlight_author(graph, aggregated_graph, highlight_author, df_data_items):
             competitor_dict[competitor] = row[competitor]
 
         core_information.update(competitor_dict)
+
+        topic_dict = {}
+        for topic in topics:
+            topic_dict[topic] = row[topic]
+
+        core_information.update(topic_dict)
+        
         node_information[row["author_id"]] = core_information
 
     # Alignment with available information
