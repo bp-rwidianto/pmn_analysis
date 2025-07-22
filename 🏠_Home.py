@@ -49,7 +49,7 @@ if st.button("Submit", type="primary", use_container_width=True):
 
     if is_ready:  
         with st.spinner(text="Now checking if the files are correct...", show_time=True, width="stretch"):
-            df_network, df_data_links, df_data_items, competitors = handle_data_input(network_data, node_data)
+            df_network, df_data_links, df_data_items, competitors, topics = handle_data_input(network_data, node_data)
             if df_network is None:
                 st.error("You have uploaded a wrong file. Please upload the correct one, or contact administrator for more information.", width="stretch")
             else:
@@ -60,7 +60,7 @@ if st.button("Submit", type="primary", use_container_width=True):
 
     if is_analysis:
         with st.spinner(text="Performing analysis...This might take a while", show_time=True, width="stretch"):
-            graph, aggregated_graph, df_data_items, fig_total_network, fig_main_network = main_analysis(df_network, df_data_links, df_data_items, competitors)
+            graph, aggregated_graph, df_data_items, fig_total_network, fig_main_network = main_analysis(df_network, df_data_links, df_data_items, competitors, topics)
             if graph is None:
                 st.error("Analysis has failed. Please try again", width="stretch")
             else:
@@ -77,6 +77,7 @@ if st.button("Submit", type="primary", use_container_width=True):
                 st.session_state.df_data_items = df_data_items
                 st.session_state.df_data_items_filtered = df_data_items
                 st.session_state.competitors = competitors
+                st.session_state.topics = topics
                 st.session_state.fig_total_network = fig_total_network
                 st.session_state.fig_main_network = fig_main_network
 
@@ -90,6 +91,7 @@ if 'graph' not in st.session_state:
     st.session_state.df_data_links = None
     st.session_state.df_data_items = None
     st.session_state.competitors = None
+    st.session_state.topics = None
     st.session_state.fig_total_network = None
     st.session_state.fig_main_network = None
 
