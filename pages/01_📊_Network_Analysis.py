@@ -25,7 +25,8 @@ if ('df_data_items' in st.session_state) and (st.session_state.df_data_items is 
         'graph': st.session_state.graph,
         'aggregated_graph': st.session_state.aggregated_graph,
         'df_data_items': st.session_state.df_data_items,
-        'competitors': st.session_state.competitors
+        'competitors': st.session_state.competitors,
+        'topics': st.session_state.topics
     }
 
 # Functions and components
@@ -93,7 +94,7 @@ def author_detail_fragment():
             author_id = get_item(st.session_state.df_data_items, author_name)["author_id"]
             with st.spinner(text="Creating network map, this process might take a while. Please wait...", show_time=True):
                 # col1, col2, col3 = st.columns([1, 6, 1])
-                html_text = highlight_author_pyvis(author_id, st.session_state.graph, st.session_state.aggregated_graph, st.session_state.df_data_items, st.session_state.competitors)
+                html_text = highlight_author_pyvis(author_id, st.session_state.graph, st.session_state.aggregated_graph, st.session_state.df_data_items, st.session_state.competitors, st.session_state.topics)
                 # with col2:
                 # st.success("Graph creation complete ✅")
                 pv_static(html_text)
