@@ -25,8 +25,7 @@ if ('df_data_items' in st.session_state) and (st.session_state.df_data_items is 
         'graph': st.session_state.graph,
         'aggregated_graph': st.session_state.aggregated_graph,
         'df_data_items': st.session_state.df_data_items,
-        'competitors': st.session_state.competitors,
-        'topics': st.session_state.topics
+        'competitors': st.session_state.competitors
     }
 
 # Functions and components
@@ -44,8 +43,8 @@ def community_members():
         index=None
     )
     if community_id is not None:
-        table_view = st.session_state.df_data_items_filtered[st.session_state.df_data_items_filtered['cluster'] == community_id][['author_id', 'FullName', 'publications', 'countries', 'bp_user', 'active_author']]
-        table_view.columns = ['Author ID', 'Name', 'Publications', 'Country', 'BP user', 'Active author']
+        table_view = st.session_state.df_data_items_filtered[st.session_state.df_data_items_filtered['cluster'] == community_id][['author_id', 'FullName', 'publications', 'countries', 'bp_user', 'active_author', 'degree_centrality', 'betweenness_centrality', 'closeness_centrality', 'eigenvector_centrality', 'pagerank']]
+        table_view.columns = ['Author ID', 'Name', 'Publications', 'Country', 'BP user', 'Active author', 'Degee cent.', 'Betweeness cent.', 'Closeness cent.', 'Eigen cent.', 'PageRank']
         st.table(
             # st.session_state.df_data_items_filtered[st.session_state.df_data_items_filtered['cluster'] == community_id][['author_id', 'FullName', 'publications', 'countries', 'bp_user', 'active_author', 'degree_centrality', 'betweenness_centrality', 'closeness_centrality', 'eigenvector_centrality', 'pagerank']]
             table_view
@@ -56,7 +55,7 @@ def community_members():
 
 ## Community map
 # Fragment for isolated updates
-@st.cache_resource
+@st.fragment
 def static_community_map_fragment():
     tab1, tab2 = st.tabs(["Full Network", "Main Network Clusters"])
 
@@ -87,8 +86,8 @@ def author_detail_fragment():
             col1.write_stream(stream_author_data(author_details))
             col2.write_stream(stream_author_competitors(author_details))
             
-            # with col3.container(border=True):
-            #     st.write_stream(stream_author_network(author_details))
+            with col3.container(border=True):
+                st.write_stream(stream_author_network(author_details))
             
         
             author_id = get_item(st.session_state.df_data_items, author_name)["author_id"]
@@ -136,6 +135,7 @@ def stream_author_data(author_details):
         time.sleep(0.02)
 
 def stream_author_network(author_details):
+    print(author_details)
     full_text = f"**Network metrics:**\n\n- Degree centrality:\n{round(author_details['degree_centrality'], 5)}\n- Betweenness centrality:\n{round(author_details['betweenness_centrality'], 5)}\n- Closeness centrality:\n{round(author_details['closeness_centrality'], 5)}\n- Eigen centrality:\n{round(author_details['eigenvector_centrality'], 5)}\n- PageRank:\n{round(author_details['pagerank'], 5)}"
         
     for word in full_text.split(" "):
@@ -143,41 +143,43 @@ def stream_author_network(author_details):
         time.sleep(0.02)
 
 # Main content
-st.title("PubMed Network Analysis 📊")
-author_details = None
+col1, col2, col3 = st.columns([1, 6, 1])
+with col2:
+    st.title("PubMed Network Analysis 📊")
+    author_details = None
 
-if ('df_data_items' not in st.session_state) or (st.session_state.df_data_items is None):
-    st.write('### No processed data found!')
-    st.write('Please upload the network and information files in "Home" page to view the network analysis contents.')
+    if ('df_data_items' not in st.session_state) or (st.session_state.df_data_items is None):
+        st.write('### No processed data found!')
+        st.write('Please upload the network and information files in "Home" page to view the network analysis contents.')
 
-else:
-    ## Sidebar and widgets
-    st.sidebar.write("## __Analysis Filters__")
-    is_bp_user = st.sidebar.toggle("BP user")
-    is_active_author = st.sidebar.toggle("Active author")
-    country_filter = st.sidebar.multiselect("Author country", tuple(sorted(st.session_state.df_data_items["countries"].unique())))
-    is_expanded = False
+    else:
+        ## Sidebar and widgets
+        st.sidebar.write("## __Analysis Filters__")
+        is_bp_user = st.sidebar.toggle("BP user")
+        is_active_author = st.sidebar.toggle("Active author")
+        country_filter = st.sidebar.multiselect("Author country", tuple(sorted(st.session_state.df_data_items["countries"].unique())))
+        is_expanded = False
 
-    ## Widget filter handler
-    if (is_bp_user == True) or (is_active_author == True) or (len(country_filter)):
-        temp = st.session_state.df_data_items
-        if (is_bp_user):
-            temp = temp[temp["bp_user"]]
-        if (is_active_author):
-            temp = temp[temp["active_author"] > 0]
-        if (len(country_filter)):
-            temp = temp[temp["countries"].isin(country_filter)]
+        ## Widget filter handler
+        if (is_bp_user == True) or (is_active_author == True) or (len(country_filter)):
+            temp = st.session_state.df_data_items
+            if (is_bp_user):
+                temp = temp[temp["bp_user"]]
+            if (is_active_author):
+                temp = temp[temp["active_author"] > 0]
+            if (len(country_filter)):
+                temp = temp[temp["countries"].isin(country_filter)]
 
-        st.session_state.df_data_items_filtered = temp
-        st.session_state.author_names = tuple(sorted(st.session_state.df_data_items_filtered["FullName"].unique()))
-        st.session_state.community_ids = tuple(sorted(st.session_state.df_data_items_filtered["cluster"].unique()))
+            st.session_state.df_data_items_filtered = temp
+            st.session_state.author_names = tuple(sorted(st.session_state.df_data_items_filtered["FullName"].unique()))
+            st.session_state.community_ids = tuple(sorted(st.session_state.df_data_items_filtered["cluster"].unique()))
 
 
-        
-    with st.expander("Community network map (static)", expanded=is_expanded):
-        static_community_map_fragment()
-        community_members()
+            
+        with st.expander("Community network map (static)", expanded=is_expanded):
+            static_community_map_fragment()
+            community_members()
 
-    st.divider()
+        st.divider()
 
-    author_detail_fragment()
+        author_detail_fragment()
