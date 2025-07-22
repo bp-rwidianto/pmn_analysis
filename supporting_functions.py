@@ -81,7 +81,8 @@ def split_large_communities(graph, partition, max_size=50):
 
 # Get data item of a specific person
 def get_item(df_data_items, name):
-    return df_data_items.loc[df_data_items[df_data_items.FullName == name].index[0]][["author_id", "FullName", "publications", "countries", "bp_user", "active_author", "mention_bp", "sub-cluster", "cluster", "manufacturerCount"]]
+    return_cols = [x for x in df_data_items.columns if ("Competitor_" not in x) and ("Topic_" not in x)]
+    return df_data_items.loc[df_data_items[df_data_items.FullName == name].index[0]][return_cols]
 
 # Retrieve members of a cluster
 def nodes_member(agg_graph, node):
@@ -172,6 +173,7 @@ def highlight_author(graph, aggregated_graph, highlight_author, df_data_items):
 
     # Filter out non-highlight community from base graph
     author_data = df_data_items[df_data_items["author_id"] == str(highlight_author)]
+    print("author_data", author_data)
     author_cluster = author_data["cluster"]
     neighbors =  [str(element) for element in list(graph.neighbors(int(highlight_author)))]
     neighbors_data = df_data_items[df_data_items["author_id"].isin(neighbors)]
