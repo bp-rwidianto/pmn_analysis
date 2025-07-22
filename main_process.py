@@ -20,7 +20,7 @@ def handle_data_input(network_data, node_data):
         ## Aggregate link informations
         df_edges = pd.DataFrame(network_data)
         df_edges["edge"] = df_edges.apply(lambda x: tuple(x["edge"]), axis = 1)
-        df_edges = df_edges.groupby("edge")[["partial_strength", "full_strength"]].agg(sum).reset_index()
+        df_edges = df_edges.groupby("edge")[["partial_strength", "full_strength"]].agg("sum").reset_index()
         df_edges["node_1"] = df_edges.apply(lambda x: x["edge"][0], axis = 1)
         df_edges["node_2"] = df_edges.apply(lambda x: x["edge"][1], axis = 1)
 
