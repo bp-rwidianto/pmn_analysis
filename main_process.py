@@ -3,6 +3,7 @@ from network_metrics import *
 
 import pandas as pd
 import numpy as np
+import re
 
 import networkx as nx
 import matplotlib.pyplot as plt
