@@ -64,9 +64,12 @@ if st.button("Submit", type="primary", use_container_width=True):
             if graph is None:
                 st.error("Analysis has failed. Please try again", width="stretch")
             else:
-                st.success("Analysis complete! ✅ You now can go to 📊 Network Analysis page to see the analysis result", width="stretch")
+                st.success("Analysis complete! ✅ You now can go to 📊 Network Analysis page or 👥 Communities page to see the analysis result", width="stretch")
                 st.write("\n")
-                st.page_link("pages/01_📊_Network_Analysis.py", label="Network Analysis", icon="📊")
+                col1, col2 = st.columns(2)
+                
+                col1.page_link("pages/01_📊_Network_Analysis.py", label="Network Analysis", icon="📊")
+                col2.page_link("pages/02_👥_Communities.py", label="Communities View", icon="👥")
                 
                 # Handle states on run success
                 st.session_state.graph = graph
