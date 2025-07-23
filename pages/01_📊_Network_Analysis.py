@@ -45,7 +45,7 @@ def community_members():
     if community_id is not None:
         table_view = st.session_state.df_data_items_filtered[st.session_state.df_data_items_filtered['cluster'] == community_id][['author_id', 'FullName', 'publications', 'countries', 'bp_user', 'active_author', 'degree_centrality', 'betweenness_centrality', 'closeness_centrality', 'eigenvector_centrality', 'pagerank']]
         table_view.columns = ['Author ID', 'Name', 'Publications', 'Country', 'BP user', 'Active author', 'Degee cent.', 'Betweeness cent.', 'Closeness cent.', 'Eigen cent.', 'PageRank']
-        st.table(
+        st.dataframe(
             # st.session_state.df_data_items_filtered[st.session_state.df_data_items_filtered['cluster'] == community_id][['author_id', 'FullName', 'publications', 'countries', 'bp_user', 'active_author', 'degree_centrality', 'betweenness_centrality', 'closeness_centrality', 'eigenvector_centrality', 'pagerank']]
             table_view
             )
@@ -82,6 +82,12 @@ def author_detail_fragment():
         if author_name is not None:
             author_details = get_item(st.session_state.df_data_items, author_name)
             st.write(f'### **{author_details['FullName']} ({author_details['author_id']})**\n\n')
+            colA, colB = st.columns([1, 13])
+            colA.write(f'**Affiliations**')
+            with colB.container(height=120, border=False):
+                affiliations = re.split("\\n", author_details['CurrentAffiliation'])
+                for affiliation in affiliations:
+                    st.write(f'- {re.sub("\\n", "", affiliation)}')
             col1, col2, col3 = st.columns(3)
             col1.write_stream(stream_author_data(author_details))
             col2.write_stream(stream_author_competitors(author_details))
@@ -135,7 +141,6 @@ def stream_author_data(author_details):
         time.sleep(0.02)
 
 def stream_author_network(author_details):
-    print(author_details)
     full_text = f"**Network metrics:**\n\n- Degree centrality:\n{round(author_details['degree_centrality'], 5)}\n- Betweenness centrality:\n{round(author_details['betweenness_centrality'], 5)}\n- Closeness centrality:\n{round(author_details['closeness_centrality'], 5)}\n- Eigen centrality:\n{round(author_details['eigenvector_centrality'], 5)}\n- PageRank:\n{round(author_details['pagerank'], 5)}"
         
     for word in full_text.split(" "):
