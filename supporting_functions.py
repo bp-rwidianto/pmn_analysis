@@ -173,7 +173,6 @@ def highlight_author(graph, aggregated_graph, highlight_author, df_data_items):
 
     # Filter out non-highlight community from base graph
     author_data = df_data_items[df_data_items["author_id"] == str(highlight_author)]
-    print("author_data", author_data)
     author_cluster = author_data["cluster"]
     neighbors =  [str(element) for element in list(graph.neighbors(int(highlight_author)))]
     neighbors_data = df_data_items[df_data_items["author_id"].isin(neighbors)]
@@ -181,10 +180,9 @@ def highlight_author(graph, aggregated_graph, highlight_author, df_data_items):
     nodes_to_include = [highlight_author]
     for i in range(0, len(df_data_items)):
         row = df_data_items.iloc[i]
-        # print(row["cluster"])
         if str(row["cluster"]) == str(author_cluster):
             nodes_to_include.append(row["author_id"])
-
+    print(str(author_cluster))
     nodes_to_include = nodes_to_include + neighbors
     
     graph_highlight = graph.copy()
