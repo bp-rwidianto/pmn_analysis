@@ -61,6 +61,7 @@ if st.button("Submit", type="primary", use_container_width=True):
     if is_analysis:
         with st.spinner(text="Performing analysis...This might take a while", show_time=True, width="stretch"):
             graph, aggregated_graph, df_data_items, fig_total_network, fig_main_network = main_analysis(df_network, df_data_links, df_data_items, competitors, topics)
+        
             if graph is None:
                 st.error("Analysis has failed. Please try again", width="stretch")
             else:
