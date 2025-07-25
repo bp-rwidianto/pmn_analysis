@@ -71,7 +71,7 @@ def static_community_map_fragment():
 # Fragment for isolated updates
 @st.fragment
 def author_detail_fragment():
-    with st.container(border=True, height=1400):
+    with st.container(border=True, height=1550):
         st.subheader("Author details")
         author_name = st.selectbox(
             "Select author",
@@ -81,6 +81,7 @@ def author_detail_fragment():
 
         if author_name is not None:
             author_details = get_item(st.session_state.df_data_items, author_name)
+            
             st.write(f'### **{author_details['FullName']} ({author_details['author_id']})**\n\n')
             colA, colB = st.columns([1, 13])
             colA.write(f'**Affiliations**')
