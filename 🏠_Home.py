@@ -6,7 +6,7 @@ import time
 import subprocess
 import sys
 
-subprocess.run([f"{sys.executable}", "script.py"])
+subprocess.run([f"{sys.executable}", "🏠_Home.py"])
 
 st.set_page_config(
     page_title="Network Analysis",

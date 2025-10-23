@@ -9,11 +9,6 @@ import numpy as np
 import re
 from stvis import pv_static
 
-import subprocess
-import sys
-
-subprocess.run([f"{sys.executable}", "script.py"])
-
 st.set_page_config(
     page_title="Network Analysis",
     page_icon="📊",

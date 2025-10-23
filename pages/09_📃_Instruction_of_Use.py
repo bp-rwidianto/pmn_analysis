@@ -2,11 +2,6 @@ import streamlit as st
 import time
 import numpy as np
 
-import subprocess
-import sys
-
-subprocess.run([f"{sys.executable}", "script.py"])
-
 st.set_page_config(page_title="Instruction of Use", page_icon="📃", 
     layout="centered")
 

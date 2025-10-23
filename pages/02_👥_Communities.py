@@ -5,11 +5,6 @@ import pandas as pd
 import numpy as np
 import re
 
-import subprocess
-import sys
-
-subprocess.run([f"{sys.executable}", "script.py"])
-
 st.set_page_config(
     page_title="Communities",
     page_icon="👥",
