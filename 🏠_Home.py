@@ -3,6 +3,11 @@ import streamlit as st
 import json
 import time
 
+import subprocess
+import sys
+
+subprocess.run([f"{sys.executable}", "script.py"])
+
 st.set_page_config(
     page_title="Network Analysis",
     page_icon="🏠",
