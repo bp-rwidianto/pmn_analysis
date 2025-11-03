@@ -88,7 +88,8 @@ def author_detail_fragment():
             with colB.container(height=120, border=False):
                 affiliations = re.split("\\n", author_details['CurrentAffiliation'])
                 for affiliation in affiliations:
-                    st.write(f'- {re.sub("\\n", "", affiliation)}')
+                    affiliation_text = re.sub("\\n", "", affiliation)
+                    st.write(f'- {affiliation_text}')
             col1, col2, col3 = st.columns(3)
             col1.write_stream(stream_author_data(author_details))
             col2.write_stream(stream_author_competitors(author_details))
@@ -189,4 +190,5 @@ with col2:
         st.divider()
 
         author_detail_fragment()
+
 
