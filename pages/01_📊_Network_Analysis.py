@@ -82,7 +82,7 @@ def author_detail_fragment():
         if author_name is not None:
             author_details = get_item(st.session_state.df_data_items, author_name)
             
-            st.write(f'### **{author_details['FullName']} ({author_details['author_id']})**\n\n')
+            st.write(f'### **{author_details["FullName"]} ({author_details["author_id"]})**\n\n')
             colA, colB = st.columns([1, 13])
             colA.write(f'**Affiliations**')
             with colB.container(height=120, border=False):
@@ -189,3 +189,4 @@ with col2:
         st.divider()
 
         author_detail_fragment()
+
