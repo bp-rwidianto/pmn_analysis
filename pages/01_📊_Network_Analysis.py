@@ -128,7 +128,8 @@ def stream_author_competitors(author_details):
         if int(competitors_count[i]) > 0:
             competitors_text.append(f" -  {true_competitor_name[competitors[i]] if competitors[i] in true_competitor_name.keys() else competitors[i]}: {competitors_count[i]}")
 
-    full_text = f"**Manufacturers:**\n\n{'\n'.join(competitors_text)}"
+    full_competitors_text = '\n'.join(competitors_text)
+    full_text = f"**Manufacturers:**\n\n{full_competitors_text}"
 
     for word in full_text.split(" "):
         yield word + " "
@@ -190,5 +191,6 @@ with col2:
         st.divider()
 
         author_detail_fragment()
+
 
 
